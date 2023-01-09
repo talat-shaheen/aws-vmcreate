@@ -4,8 +4,6 @@ import (
 	"context"
 	"flag"
 
-	//"flag"
-
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -57,24 +55,11 @@ func MakeInstance(c context.Context, api EC2CreateInstanceAPI, input *ec2.RunIns
 func MakeTags(c context.Context, api EC2CreateInstanceAPI, input *ec2.CreateTagsInput) (*ec2.CreateTagsOutput, error) {
 	return api.CreateTags(c, input)
 }
-func init() {
-	cfg, err := config.LoadDefaultConfig(context.TODO())
-	if err != nil {
-		panic("configuration error, " + err.Error())
-	}
-	client = ec2.NewFromConfig(cfg)
-
+func DeleteInstancesCmd() {
+	fmt.Println("TO DO")
 }
-func main() {
-	name := flag.String("n", "", "The name of the tag to attach to the instance")
-	value := flag.String("v", "", "The value of the tag to attach to the instance")
-	flag.Parse()
 
-	if *name == "" || *value == "" {
-		fmt.Println("You must supply a name and value for the tag (-n NAME -v VALUE)")
-		return
-	}
-
+func CreateInstancesCmd(name *string, value *string) {
 	// Create separate values if required.
 	minMaxCount := int32(1)
 
@@ -110,4 +95,38 @@ func main() {
 	}
 
 	fmt.Println("Created tagged instance with ID " + *result.Instances[0].InstanceId)
+}
+func init() {
+	cfg, err := config.LoadDefaultConfig(context.TODO())
+	if err != nil {
+		panic("configuration error, " + err.Error())
+	}
+	client = ec2.NewFromConfig(cfg)
+
+}
+func main() {
+	fmt.Println("Provisioning/De-provisioning EC2 in progress")
+	command := flag.String("c", "", "command  create or delete")
+	name := flag.String("n", "", "The name of the tag to attach to the instance")
+	value := flag.String("v", "", "The value of the tag to attach to the instance")
+
+	flag.Parse()
+
+	if *command == "" {
+		fmt.Println("You must supply an command  start or stop (-c start")
+		return
+	}
+
+	if *name == "" || *value == "" {
+		fmt.Println("You must supply a name and value for the tag (-n NAME -v VALUE)")
+		return
+	}
+
+	if *command == "create" {
+		CreateInstancesCmd(name, value)
+	}
+
+	if *command == "delete" {
+		DeleteInstancesCmd()
+	}
 }
