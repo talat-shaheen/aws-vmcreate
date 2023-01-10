@@ -25,4 +25,4 @@ COPY go.* ./
 COPY aws-vmcreate.go .
 RUN go mod download
 RUN go build -o aws-vmcreate
-CMD ["bash","-c","/opt/aws-vmcreate -c  $ec2_command -n $ec2_tag_key -v ec2_tag_value "]
+CMD ["bash","-c","/opt/aws-vmcreate -c  $ec2_command -n $ec2_tag_key -v $ec2_tag_value "]
