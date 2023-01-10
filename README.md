@@ -1,7 +1,7 @@
 # aws-vmcreate
 
 ## Build docker image
-Pre-requisite: Need to login to any image registry
+Pre-requisite: Need to login to any image registry and replace registry in the command below
 
 ```
 docker build -t  quay.io/talat_shaheen0/aws-vmcreate:latest .
